@@ -1,9 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:test_app/utils/colors.dart';
+import 'dart:convert';
 
-import '../../data/data.dart';
-import '../../widgets/simple_button.dart';
-import 'destinations_list.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:recipe_app/utils/colors.dart';
+import 'package:recipe_app/views/discover/dishes_list.dart';
+import 'package:recipe_app/views/discover/meals_list.dart';
+import 'package:recipe_app/widgets/searchbar.dart';
+
+import '../../models/dish.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({Key? key}) : super(key: key);
@@ -13,85 +18,115 @@ class DiscoverPage extends StatefulWidget {
 }
 
 class _DiscoverPageState extends State<DiscoverPage> {
+  List<Dish> _dishes = <Dish>[];
+
+  Future<List<Dish>> getRecipes() async {
+    final String response = await rootBundle.loadString('assets/data.json');
+    final data = await json.decode(response);
+    final list = (data as List<dynamic>).map((e) {
+      return Dish.fromJson(e as Map<String, dynamic>);
+    });
+    return list.toList();
+  }
+
+  void _populatedishes() async {
+    final dishes = await getRecipes();
+    setState(() {
+      _dishes = dishes;
+    });
+  }
+
+   @override
+  initState() {
+    super.initState();
+    _populatedishes();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Travel App', style: Theme.of(context).textTheme.headline5!.copyWith(color: AppColors.white)),
-        centerTitle: true,
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: IconButton(
+            icon: const Icon(CupertinoIcons.text_justifyleft),
+            color: AppColors.white,
+            iconSize: 30,
+            onPressed: () {},
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: IconButton(
+              icon: const Icon(Icons.notifications_none_outlined),
+              color: AppColors.white,
+              iconSize: 30,
+              onPressed: () {},
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
-        child: Column( 
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.network(
-              "https://img.freepik.com/premium-photo/colorful-hot-air-balloons-before-launch-goreme-national-park-cappadocia-turkey_87498-239.jpg?w=1380",
-              fit: BoxFit.fill,
-              height: size.height / 3 ,
-              width: size.width,
-            ),
-            SizedBox(
-              height: size.height * 0.03,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: size.height * 0.02,
+              ),
+              Text("Hi, Connor ", style: Theme.of(context).textTheme.bodyText1),
+              SizedBox(
+                height: size.height * 0.01,
+              ),
+              Text(
+                "What do you want to cook today? ",
+                style: Theme.of(context).textTheme.headline4,
+                textAlign: TextAlign.justify,
+              ),
+              SizedBox(
+                height: size.height * 0.03,
+              ),
+              SearchField(size: size),
+              SizedBox(
+                height: size.height * 0.03,
+              ),
+              Text("Most Popular Recipes ",
+                  style: Theme.of(context).textTheme.headline6),
+              SizedBox(
+                height: size.height * 0.03,
+              ),
+              SizedBox(
+                  height: size.height / 3,
+                  child: Disheslist(
+                    dishes: _dishes,
+                  )),
+              SizedBox(
+                height: size.height * 0.03,
+              ),
+              Row(
                 children: [
-                  MainButton(
-                    width: 110,
-                    text: "Attraction",
-                    textcolor: AppColors.white,
-                    buttoncolor: AppColors.midnightblue,
-                    onpressed: () {},
-                    bordercolor: AppColors.white,
+                  IconButton(
+                    icon: const Icon(Icons.tune),
+                    color: AppColors.white,
+                    iconSize: 30,
+                    onPressed: () {},
                   ),
-                  MainButton(
-                    width: 110,
-                    text: "Places",
-                    textcolor: AppColors.white,
-                    buttoncolor: AppColors.midnightblue,
-                    onpressed: () {},
-                    bordercolor: AppColors.white,
-                  ),
-                  MainButton(
-                    width: 110,
-                    text: "Hotels",
-                    textcolor: AppColors.white,
-                    buttoncolor: AppColors.midnightblue,
-                    onpressed: () {},
-                    bordercolor: AppColors.white,
+                  const Expanded(
+                    child: SizedBox(height: 60, child: Mealslist()),
                   ),
                 ],
               ),
-            ),
-            SizedBox(
-              height: size.height * 0.03,
-            ),
-             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text("Popular Destinations ",
-                                style: Theme.of(context).textTheme.headline5),
-            ),
-            
-            SizedBox(
-              height: size.height * 0.03,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: SizedBox(
-                height: size.height,
-                child: DestinationsList(cities: citylist,)
+              SizedBox(
+                height: size.height * 0.03,
               ),
-            ),
-            SizedBox(
-              height: size.height * 0.03,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ) /*: const NoConnectionScreen()*/;
+    );
   }
 }
