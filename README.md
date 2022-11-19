@@ -1,15 +1,15 @@
-# travel_app
+# Recipe_app ui concept
+A Recipe_app  ui concept built in Flutter using nested json models,and images from the web.
 
-A new Flutter project.
+## Features
+* Data used in the app is built using Nested Json.
+* the app containes some hero animations
+* . Passing data between the pages
+
+## Screenshots
+
+Home Page1                 |  Home Page2               | ingredients Page          | directions Page
+:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
+![](https://user-images.githubusercontent.com/56259590/202838625-ec1a5aab-6fb5-4b4b-9dc3-f9bc144915c2.png)|![](https://user-images.githubusercontent.com/56259590/202838628-2067f816-5305-49a4-b99f-8479070cb3b7.png)|![](https://user-images.githubusercontent.com/56259590/202838630-b6278351-9510-46f8-a097-cda432acb057.png)|![](https://user-images.githubusercontent.com/56259590/202838622-99d05688-9c0a-4a1b-9e5c-fc2f8243ac27.png)
 
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
- 
- Demos:
-<img src="https://user-images.githubusercontent.com/56259590/194873175-4f5cfb88-5582-41be-b049-de7c208a6509.png" width="300" height="600">
-<img src="https://user-images.githubusercontent.com/56259590/194873191-ae84db8f-4f5f-4afa-8f1d-33dd4fc154a4.png" width="300" height="600">
-<img src="https://user-images.githubusercontent.com/56259590/194873208-13a08a0d-ea33-4ba7-a33c-d2951f9c7ebd.png" width="300" height="600">
-<img src="https://user-images.githubusercontent.com/56259590/194873150-2bb03526-62c9-4e8e-b88b-60c6068b7241.png" width="300" height="600">
- 
